@@ -1,14 +1,18 @@
-GO_VER		:= 1.17
-TAG		:= dvusboy/tiny-scratch
-MARKER		:= .image.done
-LOG		:= build.log
+GO_VER          := 1.19
+VERSION         := 1
+TAG             := dvusboy/tiny-scratch
+MARKER          := .image.done
+LOG             := build.log
 
 .PHONY : default
 default : $(MARKER)
 
 $(MARKER) : Dockerfile main.go go.mod
 	[ -s "$@" ] && docker image rm `cat $@`; rm -f $@
-	docker build --pull --rm --build-arg GO_VER=$(GO_VER) --iidfile $@ --tag $(TAG) 2>&1 . | tee $(LOG)
+	docker build --pull --rm \
+		--build-arg VERSION=$(VERSION) \
+		--build-arg GO_VER=$(GO_VER) \
+		--iidfile $@ --tag $(TAG) 2>&1 . | tee $(LOG)
 	[ -s "$@" ] || rm -f "$@"
 
 .PHONY : clean

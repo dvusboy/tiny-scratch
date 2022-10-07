@@ -6,6 +6,7 @@ COPY go.mod main.go ./
 RUN go build -v -o /usr/local/bin/true
 
 FROM scratch
+ARG VERSION
 
 LABEL VERSION=${VERSION}
 COPY --from=builder /usr/local/bin/true /usr/bin/
